@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NGTI.Controllers
 {
-   
+    [Authorize(Policy = "AdminOnly")]
     public class AdminController : Controller
     {
         //sql connection var
@@ -321,23 +321,50 @@ namespace NGTI.Controllers
             }
             return RedirectToAction("Reservations");
         }
-        public ActionResult EditSolo(int id)
+        //editsolo view
+        public async Task<ActionResult> EditSoloAsync(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var soloReservation = await _context.SoloReservations.FindAsync(id);
+            if (soloReservation == null)
+            {
+                return NotFound();
+            }
+           
+            return View(soloReservation);
         }
 
+        // POST: SoloReservations/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditSolo(int id, IFormCollection collection)
+        public async Task<IActionResult> EditSolo(int id, [Bind("IdSoloReservation,Name,Date,TimeSlot,Reason,TableId")] SoloReservation soloReservation)
         {
-            try
+            if (id != soloReservation.IdSoloReservation)
             {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(soloReservation);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return NotFound();
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            
+            return View(soloReservation);
         }
 
         public async Task<IActionResult> EditGroup(int? id)

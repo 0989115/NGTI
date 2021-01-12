@@ -5,7 +5,7 @@
     int year = DateTime.Now.Year;
     DateTime firstDay = new DateTime(year, 1, 1);
     firstDay = correctToMonday(firstDay);
-    int weken = 2;
+    int weken = 2;  //aantal weken dat je kan kiezen bij reservering
     int weekNr = (DateTime.Today - firstDay).Days / 7 + 1;
     //initialize selectlist for weeknrs and fill
     int[] selectlist = new int[weken];
@@ -55,6 +55,13 @@
                         <input asp-for="Name" class="form-control" value="@User.Identity.Name" hidden />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
+                    <!--<div class="form-group">
+                        @for (var i = 1; i <= 10; i++)
+                        {
+                            <input name="AreChecked" type="checkbox" value="@i" /> @i<br />
+                        }
+                        
+                    </div>-->
                     <div class="form-group">
                         <!--<label asp-for="Date" class="control-label"></label>
                         <input asp-for="Date" type="date" asp-format="{0:dd:mm:yyyy}" class="form-control" />
@@ -73,11 +80,11 @@
                         </div>
                         <!-- choose days -->
                         <div>
-                            <label>Ma<input type="checkbox" name="days" value=0></label>
-                            <label>Di<input type="checkbox" name="days" value=1></label>
-                            <label>Wo<input type="checkbox" name="days" value=2></label>
-                            <label>Do<input type="checkbox" name="days" value=3></label>
-                            <label>Vr<input type="checkbox" name="days" value=4></label>
+                            <label class ="container1">Ma<input type="checkbox" checked="checked" name="days" value=0><span class="checkmark1"></span></label>
+                            <label class ="container2">Di<input type="checkbox" checked="checked" name="days" value=1><span class="checkmark2"></span></label>
+                            <label class ="container3">Wo<input type="checkbox" checked="checked" name="days" value=2><span class="checkmark3"></span></label>
+                            <label class ="container4">Do<input type="checkbox" checked="checked" name="days" value=3><span class="checkmark4"></span></label>
+                            <label class ="container5">Vr<input type="checkbox" checked="checked" name="days" value=4><span class="checkmark5"></span></label>
                         </div>
                     </div>
                     <div class="form-group">
@@ -105,16 +112,20 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Create" class="submit" />
+                        <input type="submit" value="Create" class="submit" onclick="MyEvent()" />
                     </div>
                 </form>
-                <a asp-action="Index">Go to Overview</a>
+               
+                    <a asp-action="Index" class="submit2">Go to Overview</a>
+                
             </div>
         </div>
 
+       
 
         @section Scripts {
             @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+               
         }
     </div>
     <script>
