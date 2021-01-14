@@ -20,4 +20,9 @@ namespace NGTI.Models
 
         public List<GroupReservation> mygroupList { get; set; }
     }
+
+    public class bhvViewModel
+    {
+        public bool bhver { get; set; }
+    }
 }
